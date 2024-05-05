@@ -8,11 +8,47 @@ const cursor = {
   y: 0,
 };
 
+/**
+ * Sizes
+ */
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight
+}
+
 window.addEventListener('mousemove', (event) => {
   // console.log('event', event)
   cursor.x = event.clientX / sizes.width - 0.5;
   cursor.y = (event.clientY / sizes.height - 0.5) * -1;
   // console.log('cursor.y', cursor.y)
+});
+
+window.addEventListener('resize', (event) => {
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(sizes.width, sizes.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+window.addEventListener('dblclick', (event) => {
+  const fullScreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+
+  if (!fullScreenElement) {
+    if (canvas.requestFullscreen) {
+      canvas.requestFullscreen();
+    } else if (canvas.webkitRequestFullscreen) {
+      canvas.webkitRequestFullscreen();
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitFullscreenElement) {
+      document.webkitExitFullscreen();
+    }
+  }
 });
 
 // Canvas
@@ -24,12 +60,12 @@ const group = new THREE.Group();
 
 scene.add(group);
 
-const cube1 = new THREE.Mesh(
-  new THREE.BoxGeometry(1, 1, 1),
-  new THREE.MeshBasicMaterial({ color: 0xff0000  })
-);
+// const cube1 = new THREE.Mesh(
+//   new THREE.BoxGeometry(1, 1, 1),
+//   new THREE.MeshBasicMaterial({ color: 0xff0000  })
+// );
 
-group.add(cube1);
+// group.add(cube1);
 
 // const cube2 = new THREE.Mesh(
 //   new THREE.BoxGeometry(1, 1, 1),
@@ -51,6 +87,37 @@ group.add(cube1);
 // group.position.y = 1
 // group.position.z = -1
 
+// const positionArray = new Float32Array([
+//   0, 0, 0,
+//   0, 1, 0,
+//   1, 0, 0,
+// ]);
+// const positionAttributres = new THREE.BufferAttribute(positionArray, 3);
+// const geometry = new THREE.BufferGeometry();
+// geometry.setAttribute('position', positionAttributres);
+// const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
+
+const geometry = new THREE.BufferGeometry();
+const count = 50;
+const positionArray = new Float32Array(count * 3 * 3);
+
+for (let i = 0; i < count * 3 * 3; i++) {
+  positionArray[i] = (Math.random() - 0.5) * 4;
+}
+
+const positionAttributres = new THREE.BufferAttribute(positionArray, 3)
+geometry.setAttribute('position', positionAttributres);
+const material = new THREE.MeshBasicMaterial({ 
+  color: 0xff0000,
+  wireframe: true
+});
+const cube = new THREE.Mesh(
+  geometry, material
+)
+  
+
+group.add(cube);
+
 
 /**
  * Object
@@ -62,15 +129,9 @@ group.add(cube1);
 // mesh.position.set(-1.1, 1, -1.5)
 // mesh.scale.set(1.2, 2.0, 3);
 // mesh.rotation.set(0, 0, 0);
-const axesHelper = new THREE.AxesHelper(2)
-scene.add(axesHelper)
-/**
- * Sizes
- */
-const sizes = {
-    width: 800,
-    height: 600
-}
+// const axesHelper = new THREE.AxesHelper(2)
+// scene.add(axesHelper)
+
 
 /**
  * Camera
@@ -107,6 +168,7 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.render(scene, camera)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 let time = Date.now();
 
@@ -161,4 +223,4 @@ const tick = () => {
 //   window.requestAnimationFrame(tick);
 // }
 
-// tick();
+tick();
