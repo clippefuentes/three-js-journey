@@ -1,5 +1,19 @@
 import * as THREE from 'three'
 import gsap from 'gsap';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
+
+// Cursor
+const cursor = {
+  x: 0,
+  y: 0,
+};
+
+window.addEventListener('mousemove', (event) => {
+  // console.log('event', event)
+  cursor.x = event.clientX / sizes.width - 0.5;
+  cursor.y = (event.clientY / sizes.height - 0.5) * -1;
+  // console.log('cursor.y', cursor.y)
+});
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -61,16 +75,29 @@ const sizes = {
 /**
  * Camera
  */
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, .1, 100)
+// const aspectRatio = sizes.width / sizes.height;
+// const camera = new THREE.OrthographicCamera(
+//   -3 * aspectRatio,
+//   3 * aspectRatio, 
+//   3, 
+//   -3,
+//   0.1,
+//   100
+// );
 camera.position.z = 5
 camera.position.y = 1
 camera.position.x = .5
-
+console.log('Camera aposition', camera.position.length())
 scene.add(camera)
 
 // camera.lookAt(new THREE.Vector3(1, 1, 1));
 
 // camera.lookAt(mesh.position);
+
+// Controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
 
 /**
  * Renderer
@@ -98,29 +125,40 @@ let time = Date.now();
 
 const clock = new THREE.Clock();
 
-// const tick = () => {
-//   console.log('tick');
-//   // cube1.position.x += 0.001
-//   const currentTime = clock.getElapsedTime();
-//   console.log('currentTime', currentTime);
-//   // const deltaTime = currentTime - time;
-//   // time = currentTime;
-//   cube1.rotation.y = currentTime * Math.PI;
-//   cube1.position.y = Math.sin(currentTime);
-//   cube1.position.x = Math.cos(currentTime);
-//   camera.lookAt(cube1.position)
-
-//   renderer.render(scene, camera)
-//   window.requestAnimationFrame(tick);
-// }
-
-
-gsap.to(cube1.position, { x: 3, duration: 1, delay: 1 });
-gsap.to(cube1.position, { x: 0, duration: 1, delay: 2.5 });
-
 const tick = () => {
+  const currentTime = clock.getElapsedTime();
+  // cube1.rotation.y = currentTime * Math.PI;
+  // cube1.position.y = Math.sin(currentTime);
+  // cube1.position.x = Math.cos(currentTime);
+  // camera.lookAt(cube1.position)
+  // update mcaera
+  // const positionX = Math.sin(cursor.x * Math.PI * 2) * 3;
+  // const positionZ = Math.cos(cursor.x * Math.PI * 2) * 3;
+  // const positionY = cursor.y * 3;
+  // camera.position.set(
+  //   positionX, 
+  //   positionY, 
+  //   positionZ
+  // )
+  // camera.lookAt(
+  //   // new THREE.Vector3()
+  //   cube1.position
+  // )
+  
+  // Update controls
+  controls.update()
+
   renderer.render(scene, camera)
   window.requestAnimationFrame(tick);
 }
 
-tick();
+
+// gsap.to(cube1.position, { x: 3, duration: 1, delay: 1 });
+// gsap.to(cube1.position, { x: 0, duration: 1, delay: 2.5 });
+
+// const tick = () => {
+//   renderer.render(scene, camera)
+//   window.requestAnimationFrame(tick);
+// }
+
+// tick();
