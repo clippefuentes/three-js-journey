@@ -87,25 +87,25 @@ scene.add(group);
 // group.position.y = 1
 // group.position.z = -1
 
-// const positionArray = new Float32Array([
-//   0, 0, 0,
-//   0, 1, 0,
-//   1, 0, 0,
-// ]);
-// const positionAttributres = new THREE.BufferAttribute(positionArray, 3);
-// const geometry = new THREE.BufferGeometry();
-// geometry.setAttribute('position', positionAttributres);
+const positionArray = new Float32Array([
+  0, 0, 0,
+  0, 1, 0,
+  1, 0, 0,
+]);
+const positionAttributres = new THREE.BufferAttribute(positionArray, 3);
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', positionAttributres);
 // const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
 
-const geometry = new THREE.BufferGeometry();
-const count = 50;
-const positionArray = new Float32Array(count * 3 * 3);
+// const geometry = new THREE.BufferGeometry();
+// const count = 50;
+// const positionArray = new Float32Array(count * 3 * 3);
 
-for (let i = 0; i < count * 3 * 3; i++) {
-  positionArray[i] = (Math.random() - 0.5) * 4;
-}
+// for (let i = 0; i < count * 3 * 3; i++) {
+//   positionArray[i] = (Math.random() - 0.5) * 4;
+// }
 
-const positionAttributres = new THREE.BufferAttribute(positionArray, 3)
+// const positionAttributres = new THREE.BufferAttribute(positionArray, 3)
 geometry.setAttribute('position', positionAttributres);
 const material = new THREE.MeshBasicMaterial({ 
   color: 0xff0000,
