@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import gsap from 'gsap';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
+import GUI from 'lil-gui'
 
 // Cursor
 const cursor = {
@@ -15,6 +16,7 @@ const sizes = {
   width: window.innerWidth,
   height: window.innerHeight
 }
+
 
 window.addEventListener('mousemove', (event) => {
   // console.log('event', event)
@@ -51,6 +53,12 @@ window.addEventListener('dblclick', (event) => {
   }
 });
 
+window.addEventListener('keydown', (event) =>
+{
+    if(event.key == 'h')
+        gui.show(gui._hidden)
+})
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -67,6 +75,59 @@ scene.add(group);
 
 // group.add(cube1);
 
+
+
+const gui = new GUI({
+  closeFolders: true,
+});
+const cubeTweaks = gui.addFolder('Awesome cube')
+const debugObject = {}
+debugObject.color = '#3a6ea6';
+debugObject.spin = () =>
+{
+    gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + Math.PI * 2 })
+}
+debugObject.subdivision = 2
+
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshBasicMaterial({ color: debugObject.color, wireframe: false  })
+const mesh = new THREE.Mesh(
+  geometry,
+  material
+);
+
+scene.add(mesh);
+
+cubeTweaks 
+    .add(mesh.position, 'y')
+    .min(- 3)
+    .max(3)
+    .step(0.01)
+    .name('elevation')
+
+cubeTweaks.add(mesh, 'visible')
+cubeTweaks.add(material, 'wireframe')
+cubeTweaks
+    .addColor(debugObject, 'color')
+    .onChange(() =>
+    {
+        material.color.set(debugObject.color)
+    })
+cubeTweaks.add(debugObject, 'spin')
+cubeTweaks
+    .add(debugObject, 'subdivision')
+    .min(1)
+    .max(20)
+    .step(1)
+    .onFinishChange(() =>
+    {
+        mesh.geometry.dispose()
+        mesh.geometry = new THREE.BoxGeometry(
+            1, 1, 1,
+            debugObject.subdivision, debugObject.subdivision, debugObject.subdivision
+        )
+    })
+cubeTweaks.close()
 // const cube2 = new THREE.Mesh(
 //   new THREE.BoxGeometry(1, 1, 1),
 //   new THREE.MeshBasicMaterial({ color: 0x00ff00   })
@@ -87,14 +148,14 @@ scene.add(group);
 // group.position.y = 1
 // group.position.z = -1
 
-const positionArray = new Float32Array([
-  0, 0, 0,
-  0, 1, 0,
-  1, 0, 0,
-]);
-const positionAttributres = new THREE.BufferAttribute(positionArray, 3);
-const geometry = new THREE.BufferGeometry();
-geometry.setAttribute('position', positionAttributres);
+// const positionArray = new Float32Array([
+//   0, 0, 0,
+//   0, 1, 0,
+//   1, 0, 0,
+// ]);
+// const positionAttributres = new THREE.BufferAttribute(positionArray, 3);
+// const geometry = new THREE.BufferGeometry();
+// geometry.setAttribute('position', positionAttributres);
 // const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
 
 // const geometry = new THREE.BufferGeometry();
@@ -106,17 +167,17 @@ geometry.setAttribute('position', positionAttributres);
 // }
 
 // const positionAttributres = new THREE.BufferAttribute(positionArray, 3)
-geometry.setAttribute('position', positionAttributres);
-const material = new THREE.MeshBasicMaterial({ 
-  color: 0xff0000,
-  wireframe: true
-});
-const cube = new THREE.Mesh(
-  geometry, material
-)
+// geometry.setAttribute('position', positionAttributres);
+// const material = new THREE.MeshBasicMaterial({ 
+//   color: 0xff0000,
+//   wireframe: true
+// });
+// const cube = new THREE.Mesh(
+//   geometry, material
+// )
   
 
-group.add(cube);
+// group.add(cube);
 
 
 /**
