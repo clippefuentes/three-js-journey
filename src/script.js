@@ -89,8 +89,16 @@ debugObject.spin = () =>
 }
 debugObject.subdivision = 2
 
+const loadingManager = new THREE.LoadingManager()
+const textureLoader = new THREE.TextureLoader(loadingManager)
+const colorTexture  = textureLoader.load('/textures/door/Door_Wood_001_basecolor.jpg')
+colorTexture.colorSpace = THREE.SRGBColorSpace
 const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: debugObject.color, wireframe: false  })
+const material = new THREE.MeshBasicMaterial({
+  // color: debugObject.color,
+  wireframe: false,
+  map: colorTexture
+})
 const mesh = new THREE.Mesh(
   geometry,
   material
