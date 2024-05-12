@@ -93,6 +93,26 @@ const loadingManager = new THREE.LoadingManager()
 const textureLoader = new THREE.TextureLoader(loadingManager)
 const colorTexture  = textureLoader.load('/textures/door/Door_Wood_001_basecolor.jpg')
 colorTexture.colorSpace = THREE.SRGBColorSpace
+// colorTexture.repeat.x = 2
+// colorTexture.repeat.y = 3
+// colorTexture.wrapS = THREE.RepeatWrapping
+// colorTexture.wrapT = THREE.RepeatWrapping
+// colorTexture.offset.x = 0.1
+// colorTexture.offset.y = 0.5
+colorTexture.rotation = Math.PI * 0.25
+colorTexture.center.x = 0.5
+colorTexture.center.y = 0.5
+
+colorTexture.minFilter = THREE.NearestFilter
+colorTexture.magFilter = THREE.NearestFilter
+cubeTweaks.add(colorTexture.center, 'y').min(- 3)
+.max(3)
+.step(0.01)
+.name('center y');
+cubeTweaks.add(colorTexture.center, 'x').min(- 3)
+.max(3)
+.step(0.01)
+.name('center x');
 const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({
   // color: debugObject.color,
@@ -105,6 +125,17 @@ const mesh = new THREE.Mesh(
 );
 
 scene.add(mesh);
+
+const geometry1 = new THREE.BoxGeometry(1, 1, 1)
+
+// Or
+const geometry2 = new THREE.SphereGeometry(1, 32, 32)
+
+// Or
+const geometry3 = new THREE.ConeGeometry(1, 1, 32)
+
+// Or
+const geometry4 = new THREE.TorusGeometry(1, 0.35, 32, 100)
 
 cubeTweaks 
     .add(mesh.position, 'y')
@@ -215,10 +246,9 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, .1, 1
 //   0.1,
 //   100
 // );
-camera.position.z = 5
-camera.position.y = 1
-camera.position.x = .5
-console.log('Camera aposition', camera.position.length())
+camera.position.z = 1.2
+camera.position.y = .5
+camera.position.x = .3
 scene.add(camera)
 
 // camera.lookAt(new THREE.Vector3(1, 1, 1));
