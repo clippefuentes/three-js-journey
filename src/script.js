@@ -104,14 +104,52 @@ const doorHeightTexture = textureLoader.load('./materials/door/height.jpg')
 const doorNormalTexture = textureLoader.load('./materials/door/normal.jpg')
 const doorMetalnessTexture = textureLoader.load('./materials/door/metalness.jpg')
 const doorRoughnessTexture = textureLoader.load('./materials/door/roughness.jpg')
-const matcapTexture = textureLoader.load('./materials/matcaps/1.png')
+// const matcapTexture = textureLoader.load('./materials/matcaps/1.png')
+// const matcapTexture = textureLoader.load('./materials/matcaps/2.png')
+const matcapTexture = textureLoader.load('./materials/matcaps/3.png')
+// const matcapTexture = textureLoader.load('./materials/matcaps/4.png')
+// const matcapTexture = textureLoader.load('./materials/matcaps/5.png')
+// const matcapTexture = textureLoader.load('./materials/matcaps/6.png')
 const gradientTexture = textureLoader.load('./materials/gradients/3.jpg')
 
 doorColorTexture.colorSpace = THREE.SRGBColorSpace
 matcapTexture.colorSpace = THREE.SRGBColorSpace
 
 
-const material = new THREE.MeshBasicMaterial({ map: doorColorTexture })
+// const material = new THREE.MeshBasicMaterial({ map: doorColorTexture })
+// material.color = new THREE.Color('#ff0000')
+// material.transparent = true
+// material.opacity = 0.5
+// material.alphaMap = doorAlphaTexture
+// material.side = THREE.DoubleSide
+
+// const material = new THREE.MeshNormalMaterial()
+// material.flatShading = true
+
+// const material = new THREE.MeshMatcapMaterial()
+// material.matcap = matcapTexture
+
+// const material = new THREE.MeshDepthMaterial()
+
+// const material = new THREE.MeshLambertMaterial()
+const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+scene.add(ambientLight)
+
+const pointLight = new THREE.PointLight(0xffffff, 30)
+pointLight.position.x = 2
+pointLight.position.y = 3
+pointLight.position.z = 4
+scene.add(pointLight)
+
+// const material = new THREE.MeshPhongMaterial()
+// material.shininess = 100
+// material.specular = new THREE.Color('0x1188ff')
+
+const material = new THREE.MeshToonMaterial()
+gradientTexture.minFilter = THREE.NearestFilter
+gradientTexture.magFilter = THREE.NearestFilter
+// material.gradientMap = gradientTexture
+gradientTexture.generateMipmaps = false
 
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 16, 16),
